@@ -1,1 +1,25 @@
 /*  your css code here. If applicable */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-top: 50px;
+}
+
+h1 {
+  color: #333;
+}
+
+input {
+  padding: 8px;
+  margin: 5px;
+}
+
+button,
+input[type="submit"] {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+label {
+  font-size: 16px;
+}
