@@ -1,19 +1,23 @@
+// Get elements
+const form = document.createElement("form");
+form.id = "form";
+
 document.body.innerHTML = `
 <h1>Login Form</h1>
 
-<form id="form">
-<input type="text" id="username" placeholder="Username">
-<br><br>
+<form id="login-form">
+  <input type="text" id="username" placeholder="Username">
+  <br><br>
 
-<input type="password" id="password" placeholder="Password">
-<br><br>
+  <input type="password" id="password" placeholder="Password">
+  <br><br>
 
-<input type="checkbox" id="checkbox">
-<label>Remember me.</label>
+  <input type="checkbox" id="checkbox">
+  <label for="checkbox">Remember me.</label>
 
-<br><br>
+  <br><br>
 
-<input type="submit" id="submit" value="Submit">
+  <input type="submit" id="submit" value="Submit">
 </form>
 
 <br>
@@ -23,43 +27,50 @@ Login as existing user
 </button>
 `;
 
-const form = document.getElementById("form");
+const loginForm = document.getElementById("login-form");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const checkbox = document.getElementById("checkbox");
+const submit = document.getElementById("submit");
 const existing = document.getElementById("existing");
 
 
-if (localStorage.getItem("username")) {
+// Check saved user on page load
+window.onload = function () {
+  const savedUsername = localStorage.getItem("username");
+
+  if (savedUsername) {
     existing.style.display = "block";
-}
+  }
+};
 
 
-form.addEventListener("submit", function(e){
-    e.preventDefault();
+// Submit login
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-    let user = username.value;
-    let pass = password.value;
+  const user = username.value;
+  const pass = password.value;
 
-    alert("Logged in as " + user);
+  alert("Logged in as " + user);
 
-    if(checkbox.checked){
-        localStorage.setItem("username", user);
-        localStorage.setItem("password", pass);
-        existing.style.display = "block";
-    }
-    else{
-        localStorage.removeItem("username");
-        localStorage.removeItem("password");
-        existing.style.display = "none";
-    }
+  if (checkbox.checked) {
+    localStorage.setItem("username", user);
+    localStorage.setItem("password", pass);
+
+    existing.style.display = "block";
+  } else {
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
+
+    existing.style.display = "none";
+  }
 });
 
 
-existing.addEventListener("click", function(){
+// Existing user login
+existing.addEventListener("click", function () {
+  const savedUser = localStorage.getItem("username");
 
-    let savedUser = localStorage.getItem("username");
-
-    alert("Logged in as " + savedUser);
-
+  alert("Logged in as " + savedUser);
 });
