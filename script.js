@@ -1,89 +1,65 @@
-//your JS code here. If required.
-// Create HTML elements
-const products = [
-  { id: 1, name: "Product 1", price: 10 },
-  { id: 2, name: "Product 2", price: 20 },
-  { id: 3, name: "Product 3", price: 30 },
-  { id: 4, name: "Product 4", price: 40 },
-  { id: 5, name: "Product 5", price: 50 },
-];
+document.body.innerHTML = `
+<h1>Login Form</h1>
 
-const productList = document.getElementById("product-list");
-const cartList = document.getElementById("cart-list");
-const clearCartBtn = document.getElementById("clear-cart-btn");
+<form id="form">
+<input type="text" id="username" placeholder="Username">
+<br><br>
 
-let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+<input type="password" id="password" placeholder="Password">
+<br><br>
 
-// Display products
-function renderProducts() {
-  productList.innerHTML = "";
+<input type="checkbox" id="checkbox">
+<label>Remember me.</label>
 
-  products.forEach((product) => {
-    const li = document.createElement("li");
+<br><br>
 
-    li.innerHTML = `
-      ${product.name} - $${product.price}
-      <button class="add-to-cart-btn" data-id="${product.id}">
-        Add to Cart
-      </button>
-    `;
+<input type="submit" id="submit" value="Submit">
+</form>
 
-    productList.appendChild(li);
-  });
+<br>
 
-  document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-      addToCart(Number(button.dataset.id));
-    });
-  });
+<button id="existing" style="display:none;">
+Login as existing user
+</button>
+`;
+
+const form = document.getElementById("form");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const checkbox = document.getElementById("checkbox");
+const existing = document.getElementById("existing");
+
+
+if (localStorage.getItem("username")) {
+    existing.style.display = "block";
 }
 
-// Display cart
-function renderCart() {
-  cartList.innerHTML = "";
 
-  cart.forEach((product) => {
-    const li = document.createElement("li");
+form.addEventListener("submit", function(e){
+    e.preventDefault();
 
-    li.textContent = `${product.name} - $${product.price}`;
+    let user = username.value;
+    let pass = password.value;
 
-    cartList.appendChild(li);
-  });
-}
+    alert("Logged in as " + user);
 
-// Add product
-function addToCart(productId) {
-  const product = products.find((item) => item.id === productId);
+    if(checkbox.checked){
+        localStorage.setItem("username", user);
+        localStorage.setItem("password", pass);
+        existing.style.display = "block";
+    }
+    else{
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+        existing.style.display = "none";
+    }
+});
 
-  if (product) {
-    cart.push(product);
 
-    sessionStorage.setItem("cart", JSON.stringify(cart));
+existing.addEventListener("click", function(){
 
-    renderCart();
-  }
-}
+    let savedUser = localStorage.getItem("username");
 
-// Remove product
-function removeFromCart(productId) {
-  cart = cart.filter((item) => item.id !== productId);
+    alert("Logged in as " + savedUser);
 
-  sessionStorage.setItem("cart", JSON.stringify(cart));
-
-  renderCart();
-}
-
-// Clear cart
-function clearCart() {
-  cart = [];
-
-  sessionStorage.setItem("cart", JSON.stringify(cart));
-
-  renderCart();
-}
-
-clearCartBtn.addEventListener("click", clearCart);
-
-// Initial load
-renderProducts();
-renderCart();
+});
